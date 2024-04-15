@@ -1,112 +1,160 @@
-// Add js here.
+// Initialize the video element and turn off autoplay and turn off looping.
+document.addEventListener('DOMContentLoaded', function () {
+	const video = document.getElementById('player1');
+	video.autoplay = false;
+	video.loop = false;
+});
 
-// Page Load
-var video = document.getElementById("videoplayer");
-video.load();
-video.autoplay = false;
-video.loop = false;
+// Play the video and update the volume information.
+document.addEventListener('DOMContentLoaded', function () {
+	const video = document.getElementById('player1');
+	const playButton = document.getElementById('play');
+	const volumeDisplay = document.getElementById('volume');
 
-// Play Button
-var playButton = document.getElementById("play");
+	playButton.addEventListener('click', function () {
+		if (video.paused) {
+			video.play();
+			playButton.textContent = 'Pause Video';
+			volumeDisplay.textContent = (video.volume * 100).toFixed(0) + '%';
+		} else {
+			video.pause();
+			playButton.textContent = 'Play Video';
+		}
+	});
 
-function playVideo(){
-	video.play();
-}
+	const volumeSlider = document.getElementById('slider');
+	volumeSlider.addEventListener('input', function () {
+		const volume = volumeSlider.value;
+		video.volume = volume / 100;
+		volumeDisplay.textContent = volume + '%';
+	});
+});
 
-playButton.addEventListener("click", playVideo);
+// Pause the video.
+document.addEventListener('DOMContentLoaded', function () {
+	const video = document.getElementById('player1');
+	const pauseButton = document.getElementById('pause');
+	const volumeDisplay = document.getElementById('volume');
 
-// Pause Button
-var pauseButton = document.getElementById("pause");
+	pauseButton.addEventListener('click', function () {
+		if (!video.paused) {
+			video.pause();
+			volumeDisplay.textContent = (video.volume * 100).toFixed(0) + '%';
+		}
+	});
 
-function pauseVideo(){
-	video.pause();
-}
+	const playButton = document.getElementById('play');
+	playButton.addEventListener('click', function () {
+		if (video.paused) {
+			video.play();
+			volumeDisplay.textContent = (video.volume * 100).toFixed(0) + '%';
+		} else {
+			video.pause();
+			volumeDisplay.textContent = (video.volume * 100).toFixed(0) + '%';
+		}
+	});
 
-pauseButton.addEventListener("click", pauseVideo);
+	const volumeSlider = document.getElementById('slider');
+	volumeSlider.addEventListener('input', function () {
+		const volume = volumeSlider.value;
+		video.volume = volume / 100;
+		volumeDisplay.textContent = volume + '%';
+	});
+});
 
-// Slow Down
-var slowDown = document.getElementById("slower");
+// Slow the current video speed by 10% each time the button is clicked and log the new speed to the console.
+document.addEventListener('DOMContentLoaded', function () {
+	const video = document.getElementById('player1');
+	const slowerButton = document.getElementById('slower');
 
-function slowVideo(){
-	if (video.playbackRate == 2){
-		video.playbackRate = 1;
-	}
-	else if (video.playbackRate == 1){
-		video.playbackRate = 0.5;
-	}
-	else if (video.playbackRate == 0.5){
-		window.alert("Video is at slowest speed!");
-	}
-}
+	slowerButton.addEventListener('click', function () {
+		video.playbackRate -= 0.1;
+		console.log('New video speed: ' + video.playbackRate);
+	});
+});
 
-slowDown.addEventListener("click", slowVideo);
+// Increase the current video speed each time the button is clicked and log the new speed to the console.  Change it by an amount proportional to the slow down. CHECK THIS!!  If you slow down three times and then speed up three times you should be within 5 digits of 100% again.
+document.addEventListener('DOMContentLoaded', function () {
+	const video = document.getElementById('player1');
+	const fasterButton = document.getElementById('faster');
 
-// Speed Up
-var speedUp = document.getElementById("faster");
+	fasterButton.addEventListener('click', function () {
+		video.playbackRate += 0.1;
+		console.log('New video speed: ' + video.playbackRate);
+	});
+});
 
-function speedVideo(){
-	if (video.playbackRate == 0.5){
-		video.playbackRate = 1;
-	}
-	else if (video.playbackRate == 1){
-		video.playbackRate = 2;
-	}
-	else if (video.playbackRate == 2) {
-		window.alert("Video is at fastest speed!");
-	}
-}
+// Advance the current video by 10 seconds.  If the video length has been exceeded go back to the start of the video - no farther.   Log the current location of the video.
+document.addEventListener('DOMContentLoaded', function () {
+	const video = document.getElementById('player1');
+	const skipButton = document.getElementById('skip');
 
-speedUp.addEventListener("click", speedVideo);
+	skipButton.addEventListener('click', function () {
+		video.currentTime += 10;
+		if (video.currentTime >= video.duration) {
+			video.currentTime = 0;
+		}
+		console.log('Current location: ' + video.currentTime);
+	});
+});
 
-// Skip Ahead
-var skipAhead = document.getElementById("skip");
+// Mute/unmute the video and update the text in the button.
+document.addEventListener('DOMContentLoaded', function () {
+	const video = document.getElementById('player1');
+	const muteButton = document.getElementById('mute');
 
-function skipVideo(){
-	video.currentTime = video.currentTime + 15;
-	if(video.currentTime >= video.duration){
-		video.currentTime = 0;
-	}
-}
+	muteButton.addEventListener('click', function () {
+		if (video.muted) {
+			video.muted = false;
+			muteButton.textContent = 'Mute';
+		} else {
+			video.muted = true;
+			muteButton.textContent = 'Unmute';
+		}
+	});
+});
 
-skipAhead.addEventListener("click", skipVideo);
+// Change the volume based on the slider and update the volume information.
+document.addEventListener('DOMContentLoaded', function () {
+	const video = document.getElementById('player1');
+	const playButton = document.getElementById('play');
+	const volumeDisplay = document.getElementById('volume');
 
-// Mute
-var muteButton = document.getElementById("mute");
-var tempVolume = 0;
+	playButton.addEventListener('click', function () {
+		if (video.paused) {
+			video.play();
+			playButton.textContent = 'Pause Video';
+			volumeDisplay.textContent = video.volume * 100 + '%';
+		} else {
+			video.pause();
+			playButton.textContent = 'Play Video';
+		}
+	});
 
-function muteVideo(){
-	if (video.muted === false){
-		video.muted = true;
-		muteButton.textContent = 'Unmute';
-		tempVolume = volumeSlider.value;
-		volumeSlider.value = 0;
-        volumeNumber.innerHTML = volumeSlider.value + "%";
-	}
-	else if (video.muted === true){
-		video.muted = false;
-		muteButton.textContent = 'Mute';
-		volumeSlider.value = tempVolume;
-        volumeNumber.innerHTML = volumeSlider.value + "%";
-	}
-}
+	const volumeSlider = document.getElementById('slider');
+	volumeSlider.addEventListener('input', function () {
+		const volume = volumeSlider.value;
+		video.volume = volume / 100;
+		volumeDisplay.textContent = volume + '%';
+	});
+});
 
-muteButton.addEventListener("click", muteVideo);
+// Utilize the existing oldSchool class on the video element.
+document.addEventListener('DOMContentLoaded', function () {
+	const video = document.getElementById('player1');
+	const volumeSlider = document.getElementById('vintage');
 
-// Volume Slider
-var volumeSlider = document.getElementById("slider");
-var volumeNumber = document.getElementById("volume");
+	volumeSlider.addEventListener('click', function () {
+	video.classList.add('oldSchool');
+	});
+});
 
-function changeVolume(){
-	video.volume = volumeSlider.value / 100;
-	volumeNumber.innerHTML = video.volume * 100 + "%";
-	if (video.volume == 0) {
-        video.muted = true;
-        muteButton.textContent = 'Unmute';
-    }
-    else {
-        video.muted = false;
-        muteButton.textContent = 'Mute';
-    }
-}
+// Remove the oldSchool class from the video.
+document.addEventListener('DOMContentLoaded', function () {
+	const video = document.getElementById('player1');
+	const removeButton = document.getElementById('orig');
 
-volumeSlider.addEventListener("click", changeVolume);
+	removeButton.addEventListener('click', function () {
+		video.classList.remove('oldSchool');
+	});
+});
